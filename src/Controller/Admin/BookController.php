@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Book;
 use App\Form\BookType;
+use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,14 +23,19 @@ class BookController extends AbstractController
     }
 
     #[Route('/new', name: 'app_admin_book_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // faire quelque chose
+            $manager->persist($book);
+            $manager->flush();
+            // les données de $book sont maintenant dans la base de données
+            // ici, $book->getId() vous renvoie l'id de la ligne qui vient d'être ajoutée en base de données
+
+            return $this->redirectToRoute('app_admin_book_new');
         }
 
         return $this->render('admin/book/new.html.twig', [
