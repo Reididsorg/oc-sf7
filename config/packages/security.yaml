@@ -17,9 +17,9 @@ security:
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
         main:
-            lazy: true
-            provider: app_user_provider
-            form_login:
+            lazy: true # Indique que l'authentification ne sera déclenchée que sur les pages qui l'exigent
+            provider: app_user_provider # Etape 1 de l'authentification dans le firewal : Récupération de l'objet User au moyen du UserProvider
+            form_login: # Etape 2 de l'authentification dans le firewall : Comparaison du pw de l'utilisateur avec celui enregistré au moyen de l'Authenticator
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
