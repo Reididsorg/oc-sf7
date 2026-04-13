@@ -22,8 +22,11 @@
                         <span>{{ book.pageNumber }}{{ book.pageNumber is not null ? ' pages' }}</span>
                         <span> - {{ book.editedAt|date('d M Y') }}</span>
                     </div>
-                    <div class="fs-5 mb-5">
+                    <div class="fs-5">
                         <span>Statut: {{ book.status.getLabel() }}</span>
+                    </div>
+                    <div class="fs-5 mb-5">
+                        <span>Mis en ligne par: {{ book.createdBy.firstname }} {{ book.createdBy.lastname }} ({{ book.createdBy.email }})</span>
                     </div>
                     <p class="lead">{{ book.plot }}</p>
                     <div class="d-flex">

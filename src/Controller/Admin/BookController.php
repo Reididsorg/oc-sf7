@@ -38,6 +38,12 @@ class BookController extends AbstractController
     public function new(?Book $book, Request $request, EntityManagerInterface $manager): Response
     {
         $book ??= new Book();
+
+        // Si nous avons un objet book, nous sommes sur la page d'édition
+        if ($book) {
+            $this->denyAccessUnlessGranted('book.is_creator', $book); // Si l'utilisateur n'est pas le créateur du livre, l'accès à l'édition de celui-ci est refusé grâce au voter personnalisé.
+        }
+
         $form = $this->createForm(BookType::class, $book);
 
         $form->handleRequest($request);
